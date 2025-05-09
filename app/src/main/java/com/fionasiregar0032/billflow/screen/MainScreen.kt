@@ -9,6 +9,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -17,6 +18,7 @@ import com.fionasiregar0032.billflow.model.Item
 import com.fionasiregar0032.billflow.model.PersonWithItems
 import com.fionasiregar0032.billflow.ui.theme.BillflowTheme
 import com.fionasiregar0032.billflow.viewmodel.BillViewModel
+import com.fionasiregar0032.mobpro1.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -57,7 +59,7 @@ fun MainScreen(viewModel: BillViewModel = viewModel()) {
                 OutlinedTextField(
                     value = baseTotal,
                     onValueChange = { baseTotal = it },
-                    label = { Text("Total Harga Awal (Rp)") },
+                    label = { Text(stringResource(id = R.string.total_harga_awal)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -66,7 +68,7 @@ fun MainScreen(viewModel: BillViewModel = viewModel()) {
                 OutlinedTextField(
                     value = discountPercent,
                     onValueChange = { discountPercent = it },
-                    label = { Text("Diskon (%)") },
+                    label = { Text(stringResource(id = R.string.diskon)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -75,7 +77,7 @@ fun MainScreen(viewModel: BillViewModel = viewModel()) {
                 OutlinedTextField(
                     value = servicePercent,
                     onValueChange = { servicePercent = it },
-                    label = { Text("Biaya Layanan (%)") },
+                    label = { Text(stringResource(R.string.biaya_layanan)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -87,7 +89,7 @@ fun MainScreen(viewModel: BillViewModel = viewModel()) {
                         numberOfPeople = it
                         namesOfPeople = List(it.toIntOrNull() ?: 0) { "" }
                     },
-                    label = { Text("Jumlah Orang") },
+                    label = { Text(stringResource(R.string.jumlah_orang)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -99,7 +101,7 @@ fun MainScreen(viewModel: BillViewModel = viewModel()) {
                         onValueChange = { newName ->
                             namesOfPeople = namesOfPeople.toMutableList().apply { set(index, newName) }
                         },
-                        label = { Text("Nama Orang ${index + 1}") },
+                        label = { Text(stringResource(R.string.nama_orang)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(8.dp))
@@ -113,7 +115,7 @@ fun MainScreen(viewModel: BillViewModel = viewModel()) {
                         itemNames = List(count) { "" }
                         itemPrices = List(count) { "" }
                     },
-                    label = { Text("Jumlah Item") },
+                    label = { Text(stringResource(R.string.jumlah_item)) },
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     modifier = Modifier.fillMaxWidth()
                 )
@@ -125,7 +127,7 @@ fun MainScreen(viewModel: BillViewModel = viewModel()) {
                         onValueChange = { newName ->
                             itemNames = itemNames.toMutableList().apply { set(index, newName) }
                         },
-                        label = { Text("Nama Item ${index + 1}") },
+                        label = { Text(stringResource(R.string.nama_item)) },
                         modifier = Modifier.fillMaxWidth()
                     )
                     Spacer(modifier = Modifier.height(4.dp))
@@ -137,7 +139,7 @@ fun MainScreen(viewModel: BillViewModel = viewModel()) {
                                 if (index < size) set(index, newPrice)
                             }
                         },
-                        label = { Text("Harga Item ${index + 1}") },
+                        label = { Text(stringResource(R.string.harga_item)) },
                         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                         modifier = Modifier.fillMaxWidth()
                     )
