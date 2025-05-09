@@ -3,8 +3,11 @@ package com.fionasiregar0032.billflow.screen
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
@@ -27,6 +30,18 @@ fun MainScreen(viewModel: BillViewModel) {
                     titleContentColor = Color.White,
                 )
             )
+        },
+        floatingActionButton = {
+            FloatingActionButton(
+                onClick = {  },
+                containerColor = Color(0xFF800000)
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.Add,
+                    contentDescription = "Tambah Split Bill",
+                    tint = Color.White
+                )
+            }
         }
     ) { innerPadding ->
         HomeScreen(
@@ -44,6 +59,8 @@ fun HomeScreen(viewModel: BillViewModel, modifier: Modifier = Modifier) {
     var ppn by remember { mutableStateOf("") }
     var pricePerPerson by remember { mutableStateOf("") }
 
+    var isFormVisible by remember { mutableStateOf(false) }
+
     val totalAmountFloat = totalAmount.toFloatOrNull() ?: 0f
     val numberOfPeopleInt = numberOfPeople.toIntOrNull() ?: 0
     val ppnFloat = ppn.toFloatOrNull() ?: 0f
@@ -58,52 +75,53 @@ fun HomeScreen(viewModel: BillViewModel, modifier: Modifier = Modifier) {
     pricePerPerson = pricePerPersonCalculated
 
     Column(modifier = modifier.padding(16.dp)) {
-        OutlinedTextField(
-            value = totalAmount,
-            onValueChange = { totalAmount = it },
-            label = { Text("Total Tagihan") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number
+        if (isFormVisible) {
+            OutlinedTextField(
+                value = totalAmount,
+                onValueChange = { totalAmount = it },
+                label = { Text("Total Tagihan") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        OutlinedTextField(
-            value = numberOfPeople,
-            onValueChange = { numberOfPeople = it },
-            label = { Text("Jumlah Orang") },
-            keyboardOptions = KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number
+            OutlinedTextField(
+                value = numberOfPeople,
+                onValueChange = { numberOfPeople = it },
+                label = { Text("Jumlah Orang") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                )
             )
-        )
-        Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(8.dp))
 
-        OutlinedTextField(
-            value = names,
-            onValueChange = { names = it },
-            label = { Text("Nama-nama (pisah koma)") }
-        )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        OutlinedTextField(
-            value = ppn,
-            onValueChange = { ppn = it },
-            label = { Text("PPN (%)") },
-            keyboardOptions =KeyboardOptions.Default.copy(
-                keyboardType = KeyboardType.Number
+            OutlinedTextField(
+                value = names,
+                onValueChange = { names = it },
+                label = { Text("Nama-nama (pisah koma)") }
             )
-        )
+            Spacer(modifier = Modifier.height(8.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
+            OutlinedTextField(
+                value = ppn,
+                onValueChange = { ppn = it },
+                label = { Text("PPN (%)") },
+                keyboardOptions = KeyboardOptions.Default.copy(
+                    keyboardType = KeyboardType.Number
+                )
+            )
 
-        Text("Harga per orang: Rp $pricePerPerson", style = MaterialTheme.typography.bodyLarge)
+            Spacer(modifier = Modifier.height(16.dp))
 
-        Spacer(modifier = Modifier.height(16.dp))
+            Text("Harga per orang: Rp $pricePerPerson", style = MaterialTheme.typography.bodyLarge)
 
-        Button(onClick = {
+            Spacer(modifier = Modifier.height(16.dp))
 
-        }) {
-            Text("Hitung & Simpan")
+            Button(onClick = {
+            }) {
+                Text("Hitung & Simpan")
+            }
         }
     }
 }
