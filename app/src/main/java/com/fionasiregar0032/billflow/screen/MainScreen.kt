@@ -10,9 +10,9 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.fionasiregar0032.billflow.ui.theme.BillflowTheme
 import com.fionasiregar0032.billflow.viewmodel.BillViewModel
@@ -20,6 +20,8 @@ import com.fionasiregar0032.billflow.viewmodel.BillViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(viewModel: BillViewModel) {
+    var isFormVisible by remember { mutableStateOf(false) }
+
     Scaffold(
         containerColor = Color(0xFFFFF5E1),
         topBar = {
@@ -33,7 +35,7 @@ fun MainScreen(viewModel: BillViewModel) {
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = {  },
+                onClick = { isFormVisible = true },
                 containerColor = Color(0xFF800000)
             ) {
                 Icon(
@@ -46,20 +48,33 @@ fun MainScreen(viewModel: BillViewModel) {
     ) { innerPadding ->
         HomeScreen(
             viewModel = viewModel,
-            modifier = Modifier.padding(innerPadding)
+            modifier = Modifier.padding(innerPadding),
+            isFormVisible = isFormVisible,
+            onFormVisibilityChange = { isFormVisible = it }
         )
     }
 }
 
 @Composable
-fun HomeScreen(viewModel: BillViewModel, modifier: Modifier = Modifier) {
+fun HomeScreen(
+    viewModel: BillViewModel,
+    modifier: Modifier = Modifier,
+    isFormVisible: Boolean,
+    onFormVisibilityChange: (Boolean) -> Unit
+) {
     var totalAmount by remember { mutableStateOf("") }
     var numberOfPeople by remember { mutableStateOf("") }
     var names by remember { mutableStateOf("") }
     var ppn by remember { mutableStateOf("") }
     var pricePerPerson by remember { mutableStateOf("") }
 
-    var isFormVisible by remember { mutableStateOf(false) }
+    fun resetForm() {
+        totalAmount = ""
+        numberOfPeople = ""
+        names = ""
+        ppn = ""
+        pricePerPerson = ""
+    }
 
     val totalAmountFloat = totalAmount.toFloatOrNull() ?: 0f
     val numberOfPeopleInt = numberOfPeople.toIntOrNull() ?: 0
@@ -118,9 +133,19 @@ fun HomeScreen(viewModel: BillViewModel, modifier: Modifier = Modifier) {
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            Button(onClick = {
-            }) {
-                Text("Hitung & Simpan")
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
+                Button(onClick = {
+                }) {
+                    Text("Hitung & Simpan")
+                }
+
+                OutlinedButton(onClick = {
+                    resetForm()
+                }) {
+                    Text("Reset")
+                }
             }
         }
     }
