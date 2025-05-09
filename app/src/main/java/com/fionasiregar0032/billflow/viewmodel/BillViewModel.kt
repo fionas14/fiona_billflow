@@ -1,72 +1,50 @@
 package com.fionasiregar0032.billflow.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
-import com.fionasiregar0032.billflow.model.Bill
-import kotlin.random.Random
+import androidx.compose.runtime.mutableStateListOf
+import com.fionasiregar0032.billflow.model.PersonWithItems
+import com.fionasiregar0032.billflow.util.*
 
 class BillViewModel : ViewModel() {
 
-    private val bills = mutableListOf<Bill>(
-        Bill(
-            id = 1,
-            totalAmount = 500000.0,
-            numberOfPeople = 5,
-            names = "Fiona, John, Sarah, Greg, Mike",
-            perPersonAmount = 100000.0
-        ),
-        Bill(
-            id = 2,
-            totalAmount = 1000000.0,
-            numberOfPeople = 8,
-            names = "Anna, Bob, Chloe, Dave, Eva, Felix, George, Helen",
-            perPersonAmount = 125000.0
-        )
-    )
+    private val _people = mutableStateListOf<PersonWithItems>()
+    val people: List<PersonWithItems> get() = _people
 
-    fun getBill(id: Int): Bill? {
-        return bills.find { it.id == id }
+    var serviceChargePercentage by mutableStateOf("10.0")
+    var discountPercentage by mutableStateOf("5.0")
+    var taxPercentage by mutableStateOf("11.0")
+
+    val grandTotal: Double
+        get() = calculateGrandTotal(people)
+
+    val serviceCharge: Double
+        get() = calculateServiceCharge(grandTotal, serviceChargePercentage.toDoubleOrNull() ?: 0.0)
+
+    val discount: Double
+        get() = calculateDiscount(grandTotal, discountPercentage.toDoubleOrNull() ?: 0.0)
+
+    val tax: Double
+        get() = calculateTax(grandTotal, taxPercentage.toDoubleOrNull() ?: 0.0)
+
+    val finalTotal: Double
+        get() = calculateFinalTotal(grandTotal, serviceCharge, discount, tax)
+
+    fun addPerson(person: PersonWithItems) {
+        _people.add(person)
     }
 
-    fun saveBill(
-        name: String,
-        totalAmount: String,
-        numberOfPeople: String,
-        onSuccess: () -> Unit,
-        onError: (String) -> Unit
-    ) {
-        val total = totalAmount.toDoubleOrNull()
-        val people = numberOfPeople.toIntOrNull()
-
-        if (name.isEmpty()) {
-            onError("Nama tidak boleh kosong")
-            return
-        }
-
-        if (total == null || total <= 0) {
-            onError("Total tagihan harus angka dan lebih dari 0")
-            return
-        }
-
-        if (people == null || people <= 0) {
-            onError("Jumlah orang harus angka dan lebih dari 0")
-            return
-        }
-
-        val perPersonAmount = total / people
-
-        val newBill = Bill(
-            id = Random.nextInt(1000, 9999),  // Menghasilkan ID acak untuk tagihan
-            totalAmount = total,
-            numberOfPeople = people,
-            names = name,
-            perPersonAmount = perPersonAmount
-        )
-
-        bills.add(newBill)
-        onSuccess()
+    fun clearPeople() {
+        _people.clear()
     }
 
-    fun getAllBills(): List<Bill> {
-        return bills
+    fun reset() {
+        _people.clear()
+        serviceChargePercentage = ""
+        discountPercentage = ""
+        taxPercentage = ""
     }
 }
+

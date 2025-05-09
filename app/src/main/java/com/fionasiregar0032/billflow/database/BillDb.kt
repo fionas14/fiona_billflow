@@ -1,11 +1,12 @@
 package com.fionasiregar0032.billflow.database
+
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
-import com.fionasiregar0032.billflow.model.Bill
+import com.fionasiregar0032.billflow.model.BillEntity
 
-@Database(entities = [Bill::class], version = 1)
+@Database(entities = [BillEntity::class], version = 1)
 abstract class BillDatabase : RoomDatabase() {
     abstract fun billDao(): BillDao
 
@@ -15,12 +16,15 @@ abstract class BillDatabase : RoomDatabase() {
 
         fun getDatabase(context: Context): BillDatabase {
             return INSTANCE ?: synchronized(this) {
-                Room.databaseBuilder(
+                val instance = Room.databaseBuilder(
                     context.applicationContext,
                     BillDatabase::class.java,
                     "bill_database"
-                ).build().also { INSTANCE = it }
+                ).build()
+                INSTANCE = instance
+                instance
             }
         }
     }
 }
+

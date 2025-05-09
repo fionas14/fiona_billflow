@@ -4,6 +4,7 @@ kotlin = "2.0.0"
 devtoolsKsp = "2.0.0-1.0.24"
 coreKtx = "1.10.1"
 junit = "4.13.2"
+gson = "2.10.1"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 lifecycleRuntimeKtx = "2.6.1"
@@ -36,6 +37,7 @@ androidx-room-runtime = { group = "androidx.room", name = "room-runtime",version
 androidx-lifecycle-viewmodel-compose = { module = "androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "lifecycle" }
 androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "datastorePreferences"}
 androidx-lifecycle-viewmodel-ktx = { group = "androidx.lifecycle", name = "lifecycle-viewmodel-ktx", version.ref = "lifecycle" }
+gson = { module = "com.google.code.gson:gson", version.ref = "gson" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

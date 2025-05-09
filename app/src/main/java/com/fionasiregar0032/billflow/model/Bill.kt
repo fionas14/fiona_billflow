@@ -4,11 +4,12 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = "bills")
-data class Bill(
+data class BillEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val totalAmount: Double,
-    val numberOfPeople: Int,
-    val names: String,
-    val perPersonAmount: Double,
+    val totalAmount: Float,
+    val ppn: Float,
+    val service: Float,
+    val discount: Float,
+    val perPersonJson: String,
     val timestamp: Long = System.currentTimeMillis()
 )
